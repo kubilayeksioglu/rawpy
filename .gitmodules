@@ -1,0 +1,7 @@
+[submodule "rawpy"]
+	path = rawpy
+	url = git://github.com/neothemachine/rawpy.git
+	ignore = dirty
+[submodule "terryfy"]
+	path = terryfy
+	url = git://github.com/MacPython/terryfy.git
