@@ -28,8 +28,8 @@ install:
 - export LDFLAGS=$CFLAGS
 - export ARCHFLAGS=$CFLAGS
 - cd rawpy
-# disable DNG Lossy support by removing libjpeg
 - brew rm jpeg
+- brew install --universal jpeg
 - python setup.py bdist_wheel
 - pip install delocate
 - delocate-listdeps dist/*.whl # lists library dependencies
