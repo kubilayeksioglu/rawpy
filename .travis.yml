@@ -39,17 +39,17 @@ install:
 - pip install dist/*.whl
 - cd ..
 script:
-- pip install nose
 - mkdir tmp_for_test
 - cd tmp_for_test
 - nosetests --verbosity=3 --nocapture ../rawpy/test
 - cd ..
-before_deploy: cd rawpy/dist
+
 deploy:
   provider: pypi
   user: neothemachine
   password:
-    secure: "..."
+    secure: "E7MMZ4ZdG+1ZsSPqQ5y8r8AC6/UR1AsH/cajeO1sD58QRXSojEzIgpfENIUS22a3I8jCn84k5V47pWBuELcJubk/G5fxLG2gAQ4skf1Pimwh+TGgzlNN7tE7NuM8xdtgXxFFH7GaZNp1e9TaE9ewya+sMGaqiC5EVRSA0BG5jM0="
   on:
     tags: true
     all_branches: true
+    condition: $USE_LATEST_LIBRAW = false
