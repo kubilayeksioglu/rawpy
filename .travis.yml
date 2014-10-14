@@ -42,7 +42,7 @@ script:
 - pip install nose
 - mkdir tmp_for_test
 - cd tmp_for_test
-- python setup.py nosetests --verbosity=3 --nocapture ..
+- nosetests --verbosity=3 --nocapture rawpy/test
 - cd ..
 before_deploy: cd rawpy/dist
 deploy:
