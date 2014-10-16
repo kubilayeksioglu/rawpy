@@ -39,6 +39,8 @@ install:
 - pip install dist/*.whl
 - cd ..
 script:
+# make sure it's working without any required libraries installed
+- brew rm jpeg 
 - mkdir tmp_for_test
 - cd tmp_for_test
 - nosetests --verbosity=3 --nocapture ../rawpy/test
