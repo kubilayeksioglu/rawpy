@@ -1,7 +1,10 @@
 language:
 - objective-c
 env:
-  #global: LATEST_TAG=1
+  global:
+  #- LATEST_TAG=1
+  # PYPI_PASS for deployment
+  - secure: "oupMUSNsfPH+jGxLlRfembe6dwdrd85/GlpgIpNxgCURvrsFWZCQDUvgMn+IaBz97Meovb9SrgrADT4dg+86wJ7tAfEEnFTq8nwuFkC8A2fvFHMIKV9PvUx7VLooQWje1u2BbqBk2UwpV9h9lq4QenpJXp/lqIORJg3d7wHcHpY="
   matrix:
   - VERSION=2.7.8
   - VERSION=3.3.5
@@ -45,14 +48,10 @@ script:
 - cd tmp_for_test
 - nosetests --verbosity=3 --nocapture ../rawpy/test
 # switch to rawpy folder for deployment
-- cd rawpy
+- cd ..
 
-deploy:
-  provider: pypi
-  user: neothemachine
-  password:
-    secure: "E7MMZ4ZdG+1ZsSPqQ5y8r8AC6/UR1AsH/cajeO1sD58QRXSojEzIgpfENIUS22a3I8jCn84k5V47pWBuELcJubk/G5fxLG2gAQ4skf1Pimwh+TGgzlNN7tE7NuM8xdtgXxFFH7GaZNp1e9TaE9ewya+sMGaqiC5EVRSA0BG5jM0="
-  on:
-    all_branches: true
-    condition: "\"`git log -n 1 --pretty=format:'%d'`\" =~ \"tag: v\""
-    
+after_success:
+  - if [[ "\"`git log -n 1 --pretty=format:'%d'`\" =~ \"tag: v\"" ]]; then
+      pip install twine ;
+      twine upload -u neothemachine -p $PYPI_PASS rawpy/dist/* ;
+    fi
