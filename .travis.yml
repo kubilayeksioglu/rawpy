@@ -1,54 +1,55 @@
-language:
-- objective-c
+language: objective-c
+
 env:
   global:
-  #- LATEST_TAG=1
-  # PYPI_PASS for deployment
-  - secure: "oupMUSNsfPH+jGxLlRfembe6dwdrd85/GlpgIpNxgCURvrsFWZCQDUvgMn+IaBz97Meovb9SrgrADT4dg+86wJ7tAfEEnFTq8nwuFkC8A2fvFHMIKV9PvUx7VLooQWje1u2BbqBk2UwpV9h9lq4QenpJXp/lqIORJg3d7wHcHpY="
+    #- LATEST_TAG=1
+    # PYPI_PASS for deployment
+    - secure: "oupMUSNsfPH+jGxLlRfembe6dwdrd85/GlpgIpNxgCURvrsFWZCQDUvgMn+IaBz97Meovb9SrgrADT4dg+86wJ7tAfEEnFTq8nwuFkC8A2fvFHMIKV9PvUx7VLooQWje1u2BbqBk2UwpV9h9lq4QenpJXp/lqIORJg3d7wHcHpY="
   matrix:
-  - VERSION=2.7.8
-  - VERSION=3.3.5
-  - VERSION=3.4.1
+    - VERSION=2.7.8
+    - VERSION=3.3.5
+    - VERSION=3.4.1
+
 install:
-- source terryfy/travis_tools.sh
-- get_python_environment macpython $VERSION venv
-- if [ -n "$LATEST_TAG" ]; then 
-    checkout_closest_tag rawpy ;
-  else
-    cd rawpy ;
-    git fetch ;
-    git checkout master ;
-    git log -n 1 ;
-    cd .. ;
-  fi
-- cd rawpy
-# Cython doesn't have wheels on PyPI yet
-- pip install -f http://kerbin.bic.berkeley.edu/wheelhouse/ cython
-- pip install -r dev-requirements.txt
-- brew rm jpeg
-- brew install --universal jpeg
-- export CC=clang
-- export CXX=clang++
-- export CFLAGS="-arch i386 -arch x86_64"
-- export CXXFLAGS=$CFLAGS
-- export LDFLAGS=$CFLAGS
-- export ARCHFLAGS=$CFLAGS
-- python setup.py bdist_wheel
-- pip install delocate
-- delocate-listdeps --all dist/*.whl # lists library dependencies
-- delocate-wheel --require-archs=intel dist/*.whl # copies library dependencies into wheel
-- delocate-listdeps --all dist/*.whl # verify
-- rename_wheels dist
-- pip install dist/*.whl
-- cd ..
+  - source terryfy/travis_tools.sh
+  - get_python_environment macpython $VERSION venv
+  - if [ -n "$LATEST_TAG" ]; then 
+      checkout_closest_tag rawpy ;
+    else
+      cd rawpy ;
+      git fetch ;
+      git checkout master ;
+      git log -n 1 ;
+      cd .. ;
+    fi
+  - cd rawpy
+  # Cython doesn't have wheels on PyPI yet
+  - pip install -f http://kerbin.bic.berkeley.edu/wheelhouse/ cython
+  - pip install -r dev-requirements.txt
+  - brew rm jpeg
+  - brew install --universal jpeg
+  - export CC=clang
+  - export CXX=clang++
+  - export CFLAGS="-arch i386 -arch x86_64"
+  - export CXXFLAGS=$CFLAGS
+  - export LDFLAGS=$CFLAGS
+  - export ARCHFLAGS=$CFLAGS
+  - python setup.py bdist_wheel
+  - pip install delocate
+  - delocate-listdeps --all dist/*.whl # lists library dependencies
+  - delocate-wheel --require-archs=intel dist/*.whl # copies library dependencies into wheel
+  - delocate-listdeps --all dist/*.whl # verify
+  - rename_wheels dist
+  - pip install dist/*.whl
+  - cd ..
+
 script:
-# make sure it's working without any required libraries installed
-- brew rm jpeg 
-- mkdir tmp_for_test
-- cd tmp_for_test
-- nosetests --verbosity=3 --nocapture ../rawpy/test
-# switch to rawpy folder for deployment
-- cd ..
+  # make sure it's working without any required libraries installed
+  - brew rm jpeg 
+  - mkdir tmp_for_test
+  - cd tmp_for_test
+  - nosetests --verbosity=3 --nocapture ../rawpy/test
+  - cd ..
 
 after_success:
   - cd rawpy
