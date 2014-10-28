@@ -12,7 +12,7 @@ env:
 
 install:
   - source terryfy/travis_tools.sh
-  - get_python_environment macpython $VERSION venv
+  - travis_retry get_python_environment macpython $VERSION venv
   - if [ -n "$LATEST_TAG" ]; then 
       checkout_closest_tag rawpy ;
     else
@@ -24,8 +24,8 @@ install:
     fi
   - cd rawpy
   # Cython doesn't have wheels on PyPI yet
-  - pip install -f http://kerbin.bic.berkeley.edu/wheelhouse/ cython
-  - pip install -r dev-requirements.txt
+  - travis_retry pip install -f http://kerbin.bic.berkeley.edu/wheelhouse/ cython
+  - travis_retry pip install -r dev-requirements.txt
   - brew rm jpeg
   - brew install --universal jpeg
   - export CC=clang
