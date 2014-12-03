@@ -26,6 +26,8 @@ install:
   - cd rawpy
   # Cython doesn't have wheels on PyPI yet
   - travis_retry pip install -f http://kerbin.bic.berkeley.edu/wheelhouse/ cython
+  # scikit-image 0.10.1 doesn't install six and scipy itself
+  - pip install six scipy
   - travis_retry pip install -r dev-requirements.txt
   - brew rm jpeg
   - brew install --universal jpeg
