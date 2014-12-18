@@ -123,7 +123,7 @@ include_dirs += [numpy.get_include()]
 def clone_submodules():
     if not os.path.exists('external/LibRaw/README'):
         print('LibRaw git submodule is not cloned yet, will invoke "git submodule update --init" now')
-        if os.system('git submodule update --init') != 0:
+        if os.system('cd /Users/kubilayeksioglu/vizeralabs/color-matcher && git submodule update --init') != 0:
             raise Exception('git failed')
     
     # copy cmake files into LibRaw root directory
